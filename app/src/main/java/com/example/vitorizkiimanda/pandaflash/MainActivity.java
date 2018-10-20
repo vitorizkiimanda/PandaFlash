@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,12 +20,17 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private Boolean isFlash = false;
+    private Boolean isSound = false;
     private static final int CAMERA_REQUEST = 50;
+
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mp = MediaPlayer.create(this, R.raw.ayatkursi);
 
         final boolean hasCameraFlash = getPackageManager().
                 hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
@@ -49,6 +55,23 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "No flash available on your device",
                             Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        final ImageView soundButton = findViewById(R.id.sound_button);
+        soundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isSound){
+                    soundButton.setImageResource(R.drawable.ic_warning_red_24dp);
+                    playSound(v);
+                }
+                else {
+                    soundButton.setImageResource(R.drawable.ic_warning_black_24dp);
+                    stopSound(v);
+                }
+                isSound = !isSound;
+
             }
         });
     }
@@ -84,5 +107,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public void playSound(View v){
+        mp.start();
+    }
+
+
+    public void stopSound(View v) {
+        mp.stop();
+        mp=MediaPlayer.create(this, R.raw.ayatkursi);
     }
 }
