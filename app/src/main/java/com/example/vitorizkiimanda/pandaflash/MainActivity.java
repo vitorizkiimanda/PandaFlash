@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -81,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             String cameraId = cameraManager.getCameraIdList()[0];
-            cameraManager.setTorchMode(cameraId, true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                cameraManager.setTorchMode(cameraId, true);
+            }
         } catch (CameraAccessException e) {
         }
     }
@@ -91,7 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             String cameraId = cameraManager.getCameraIdList()[0];
-            cameraManager.setTorchMode(cameraId, false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                cameraManager.setTorchMode(cameraId, false);
+            }
         } catch (CameraAccessException e) {
         }
     }
